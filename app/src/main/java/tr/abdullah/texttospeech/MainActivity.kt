@@ -4,6 +4,7 @@ import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -16,7 +17,6 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private lateinit var tts: TextToSpeech
 
     private val listItems = arrayOf("Türkçe", "English", "Deutsch")
-    private var speechRate: Float = 1.0f
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -26,6 +26,8 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
         binding.apply {
 
+            buttonCard.visibility = View.INVISIBLE
+
             tts = TextToSpeech(this@MainActivity, this@MainActivity)
 
             btnStart.setOnClickListener {
@@ -33,7 +35,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                 val text = editText.text.toString()
 
                 if(text.isEmpty())
-                    Toast.makeText(this@MainActivity, getString(R.string.warning_text), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@MainActivity, R.string.warning_text, Toast.LENGTH_SHORT).show()
 
                 else
                     speak(text)
@@ -48,7 +50,28 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
             btnSpeechRate.setOnClickListener {
 
-                changeSpeechRate()
+                buttonCard.visibility = View.VISIBLE
+            }
+
+            btn05.setOnClickListener {
+
+                buttonCard.visibility = View.INVISIBLE
+                tts.setSpeechRate(0.5f)
+                btnSpeechRate.text = "0.5x"
+            }
+
+            btn10.setOnClickListener {
+
+                buttonCard.visibility = View.INVISIBLE
+                tts.setSpeechRate(1.0f)
+                btnSpeechRate.text = "1.0x"
+            }
+
+            btn15.setOnClickListener {
+
+                buttonCard.visibility = View.INVISIBLE
+                tts.setSpeechRate(1.5f)
+                btnSpeechRate.text = "1.5x"
             }
         }
     }
@@ -67,7 +90,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             else {
 
                 binding.btnStart.isEnabled = true
-                tts.setSpeechRate(speechRate)
+                tts.setSpeechRate(1.0f)
             }
         }
 
@@ -87,7 +110,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         val builder: MaterialAlertDialogBuilder = MaterialAlertDialogBuilder(this@MainActivity)
         val checkedItem: Int = getString(R.string.checked_item).toInt()
 
-        builder.setTitle(getString(R.string.choose_language))
+        builder.setTitle(R.string.choose_language)
 
         builder.setSingleChoiceItems(listItems, checkedItem) { dialogInterface, i ->
 
@@ -96,6 +119,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                 0 -> {
                     setLanguage("TR")
                     recreate()
+
                 }
 
                 1 -> {
@@ -119,11 +143,6 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
         val dialog: AlertDialog = builder.create()
         dialog.show()
-    }
-
-    private fun changeSpeechRate() {
-
-        Toast.makeText(this, R.string.very_soon, Toast.LENGTH_SHORT).show()
     }
 
     private fun setLanguage(language: String) {
