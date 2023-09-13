@@ -11,4 +11,5 @@
     <string name="speech_language">TR</string>
     <string name="checked_item">0</string>
     <string name="cancel">İptal</string>
+    <string name="sound_speeds">Ses Hızları</string>
 </resources>

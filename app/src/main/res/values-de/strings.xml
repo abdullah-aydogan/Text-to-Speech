@@ -11,4 +11,5 @@
     <string name="speech_language">DE</string>
     <string name="checked_item">2</string>
     <string name="cancel">Stornieren</string>
+    <string name="sound_speeds">Schallgeschwindigkeiten</string>
 </resources>
